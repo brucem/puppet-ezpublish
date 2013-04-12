@@ -14,6 +14,8 @@ class ezpublish {
   # Apache
   class {'apache':  }
 
+  apache::mod { 'rewrite': }
+
   # Apache PHP module
   class {'apache::mod::php': }
 
@@ -25,12 +27,12 @@ class ezpublish {
 
   php::module{ $ezpublish::params::php_module_list:
     notify  => Service['httpd'],
-    require => Class['php'] 
+    require => Class['php'],
   }
 
   php::pear::module{ $ezpublish::params::php_pear_package_list:
     notify  => Service['httpd'],
-    require => Class['php'] 
+    require => Class['php'],
   }
 
   # Install any required packages

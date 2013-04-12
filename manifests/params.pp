@@ -13,4 +13,17 @@ class ezpublish::params {
   $package_list =['imagemagick']
 
   $default_db_root_password = '654yOuShouLdReaLLyChanGeThIS542'
+
+  $vhost_docroot = '/var/www'
+  $vhost_docroot_owner = 'www-data'
+  $vhost_docroot_group = 'www-data'
+  $vhost_docroot_options = 'FollowSymLink'
+  $vhost_template = 'ezpublish/vhost-default.conf.erb'
+
+  $default_db_host = 'localhost'
+  $default_db_priv = ['all']
+
+  # Where downloaded copies of eZ Publish are kept
+  $version_archive = '/var/ezpublish-dist'
 }
+
