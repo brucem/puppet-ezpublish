@@ -33,9 +33,11 @@ To configure Apache so eZ Publish can be installed as the default application:
 
 To setup an eZ Publish virtual host:
 
-    ezpublish::vhost {
-        G
+    ezpublish::vhost { 'ezdemo.yourdomain.com'
     }
+
+The [apache::vhosts] (https://github.com/puppetlabs/puppetlabs-apache)
+defination is reused here with some ezpublish specific defaults.
 
 To setup a eZ Publish database:
 
