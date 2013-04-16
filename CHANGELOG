@@ -1,2 +1,5 @@
 2013-04-12 Release 0.0.1
 - Initial version
+2013-04-16 release 0.0.2
+- Fix documentation
+- Remove default index.html from docroot and change ownership to allow instalation 
