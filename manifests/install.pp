@@ -4,8 +4,8 @@ define ezpublish::install(
   $destination       # Where to install files
 )
 {
-  include ezpublish::params
-  include apache::params
+  require ezpublish::params
+  require apache::params
 
   file{ $ezpublish::params::version_archive:
     ensure => 'directory',

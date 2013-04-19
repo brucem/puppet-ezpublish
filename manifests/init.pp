@@ -9,7 +9,7 @@
 #  - Install Required PHP modules
 #  - Install required packages
 class ezpublish {
-  include ezpublish::params
+  require ezpublish::params
 
   # Apache
   class {'apache':  }
