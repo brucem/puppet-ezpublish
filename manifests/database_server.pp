@@ -5,7 +5,7 @@
 class ezpublish::database_server(
   $root_password = $ezpublish::params::default_db_root_password
 ){
-  include ezpublish::params
+  require ezpublish::params
 
   class { 'mysql::server':
       config_hash => { 'root_password' => $root_password }
