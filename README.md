@@ -5,9 +5,9 @@ for:
 - the configuration of base system
 - default webserver configuration
 - vhost configuration
-- instalation of community versions of eZ publish
+- installation of community versions of eZ publish
 
-Current support is for Debian/Ubuntu based systems.  RedHat/CenrOs support will
+Current support is for Debian/Ubuntu based systems.  RedHat/CentOs support will
 be added in the future.
 
 Basic usage
@@ -36,7 +36,7 @@ To setup an eZ Publish virtual host:
     ezpublish::vhost { 'ezdemo.yourdomain.com': }
 
 The [apache::vhosts] (https://github.com/puppetlabs/puppetlabs-apache)
-defination is reused here with some ezpublish specific defaults.
+definition is reused here with some eZ Publish specific defaults.
 
 To setup a eZ Publish database:
 
@@ -48,9 +48,9 @@ To setup a eZ Publish database:
 
 To install eZ Publish:
 
-    ezpublish::install { 'eZ Publish Community Project 2013.1':
-        download_file => 'ezpublish5_community_project-2013.1-gpl-full.tar.gz',
-        download_url  => 'http://share.ez.no/content/download/147668/867411/version/1/file/ezpublish5_community_project-2013.1-gpl-full.tar.gz',
+    ezpublish::install { 'eZ Publish Community Project 2013.4':
+        download_file => 'ezpublish5_community_project-2013.4-gpl-full.tar.gz',
+        download_url  => 'http://share.ez.no/content/download/149574/883017/version/1/file/ezpublish5_community_project-2013.4-gpl-full.tar.gz',
         destination   => '/var/www'
     }
 
@@ -70,9 +70,9 @@ The above commands can be combined to prepare an eZ Publish server.
         db_pass => 'password',
       }
 
-      ezpublish::install { 'eZ Publish Community Project 2013.1':
-        download_file => 'ezpublish5_community_project-2013.1-gpl-full.tar.gz',
-        download_url  => 'http://share.ez.no/content/download/147668/867411/version/1/file/ezpublish5_community_project-2013.1-gpl-full.tar.gz',
+      ezpublish::install { 'eZ Publish Community Project 2013.4':
+        download_file => 'ezpublish5_community_project-2013.4-gpl-full.tar.gz',
+        download_url  => 'http://share.ez.no/content/download/149574/883017/version/1/file/ezpublish5_community_project-2013.4-gpl-full.tar.gz',
         destination   => '/var/www'
       }
 
@@ -91,7 +91,7 @@ Copyright and License
 
 Copyright (C) 2013 [Bruce Morrison](http://www.stuffandcontent.com/)
 
-Bruce Morrisoncan be contacted at: bruce@stuffansdcontent.com
+Bruce Morrison can be contacted at: bruce@stuffansdcontent.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

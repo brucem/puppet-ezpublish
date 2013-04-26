@@ -7,3 +7,6 @@
 - Allow setting of php default timezone in apache config
 2013-04-26 release 0.0.4
 - Add new asset linking task to install
+2013-04-26 release 0.0.5
+- Add new rewrite rules for 5.1 & 2013.4.
+- Update documentation
