@@ -5,3 +5,5 @@
 - Remove default index.html from docroot and change ownership to allow instalation 
 2013-04-26 release 0.0.3
 - Allow setting of php default timezone in apache config
+2013-04-26 release 0.0.4
+- Add new asset linking task to install
