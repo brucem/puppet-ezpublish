@@ -1,7 +1,9 @@
 <IfModule mod_php5.c>
+    php_admin_value variables_order EGPCS
     php_admin_flag safe_mode Off
     php_admin_value register_globals    0
     php_value magic_quotes_gpc  0
     php_value magic_quotes_runtime  0
     php_value allow_call_time_pass_reference 0
+    php_admin_value date.timezone <%= scope.lookupvar("ezpublish::params::php_default_date_timezone") %>
 </IfModule>

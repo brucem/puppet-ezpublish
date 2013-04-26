@@ -4,7 +4,7 @@
 # the default docroot
 #
 class ezpublish::default inherits ezpublish {
-  include ezpublish::params
+  require ezpublish::params
 
   # TODO: This should be a parameter
   $default_conf_file = '/etc/apache2/conf.d/ezpublish'
