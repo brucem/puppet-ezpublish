@@ -1,3 +1,9 @@
+#
+# This define allows eZ Publish to be downloaded, extracted and setup ready for
+# instalation.
+#
+# TODO: Consider replacing with a shell script
+#
 define ezpublish::install(
   $download_file,    # URL of destribution to install
   $download_url,     #
@@ -36,20 +42,36 @@ define ezpublish::install(
     require => Extract_file[ "${ezpublish::params::version_archive}/${download_file}" ],
   }
 
+  #
+  # Post extraction asset linking tasks
+  #
   exec{ "eZPublish link assets ${destination}":
     command => 'php ezpublish/console assets:install --symlink web',
+    onlyif  => 'php ezpublish/console list | grep assets:install',
     cwd     => $destination,
     user    => $apache::params::user,
     creates => "${destination}/web/bundles/framework",
-    require => Enforce_perms["Enforce g+rw ${destination}"]
+    require => Enforce_perms["Enforce g+rw ${destination}"],
   }
 
   exec{ "eZPublish link legacy assets ${destination}":
     command => 'php ezpublish/console ezpublish:legacy:assets_install --symlink web',
+    onlyif  => 'php ezpublish/console list | grep ezpublish:legacy:assets_install',
     cwd     => $destination,
     user    => $apache::params::user,
     creates => "${destination}/web/var",
-    require => Enforce_perms["Enforce g+rw ${destination}"]
+    require => Exec["eZPublish link assets ${destination}"],
+  }
+
+  # New for eZ Publish Community Project 2013.4
+  # Do not fail on non 0 return
+  exec{ "Assetic dump ${destination}":
+    command => 'php ezpublish/console assetic:dump --env=prod web || exit 0',
+    onlyif  => 'php ezpublish/console list | grep assetic:dump',
+    cwd     => $destination,
+    user    => $apache::params::user,
+    creates => "${destination}/web/js",
+    require => Exec["eZPublish link legacy assets ${destination}"],
   }
 
 }
