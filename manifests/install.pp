@@ -28,20 +28,44 @@ define ezpublish::install(
   }
 
   # Ensure we have a local copy of the eZ Publish version
-  download_file { $file_name:
-    site    => $download_url,
-    cwd     => $ezpublish::params::version_archive,
-    creates => "${ezpublish::params::version_archive}/${name}",
-    require => File["${destination}/ezpublish/cache/"],
-  }
+  if $download_url == '' {
 
-  # Extract the distribution into the DocRoot
-  extract_file { "${ezpublish::params::version_archive}/${file_name}":
-    dest    => $destination,
-    options => '--strip-components=1',
-    user    => $apache::params::user,
-    notify  => [Enforce_perms["Enforce g+rw ${destination}"], Service['httpd']],
-    require => Download_file[$file_name],
+    # A. Look for local file in project folder which has been mounted as /vagrant
+    copy_file { $file_name:
+      path    => '/vagrant',
+      cwd     => $ezpublish::params::version_archive,
+      creates => "${ezpublish::params::version_archive}/${name}",
+      require => File["${destination}/ezpublish/cache/"],
+    }
+
+    # Extract the distribution into the DocRoot
+    extract_file { "${ezpublish::params::version_archive}/${file_name}":
+      dest    => $destination,
+      options => '--strip-components=1',
+      user    => $apache::params::user,
+      notify  => [Enforce_perms["Enforce g+rw ${destination}"], Service['httpd']],
+      require => Copy_file[$file_name],
+    }
+
+  } else {
+
+    # B. Download file as we have an url
+    download_file { $file_name:
+      site    => $download_url,
+      cwd     => $ezpublish::params::version_archive,
+      creates => "${ezpublish::params::version_archive}/${name}",
+      require => File["${destination}/ezpublish/cache/"],
+    }
+
+    # Extract the distribution into the DocRoot
+    extract_file { "${ezpublish::params::version_archive}/${file_name}":
+      dest    => $destination,
+      options => '--strip-components=1',
+      user    => $apache::params::user,
+      notify  => [Enforce_perms["Enforce g+rw ${destination}"], Service['httpd']],
+      require => Download_file[$file_name],
+    }
+
   }
 
   # Ensure the group can read and write the files
@@ -99,12 +123,24 @@ define extract_file(
   }
 }
 
+define copy_file(
+  $path    = '',
+  $cwd     = '',
+  $creates = '')
+  {
+    exec { "Copy ${name}":
+      command => "cp ${path}/${name} ${cwd}/${name}",
+      cwd     => $cwd,
+      creates => "${cwd}/${name}",
+  }
+}
+
 define download_file(
   $site    = '',
   $cwd     = '',
   $creates = '')
   {
-    exec { $name:
+    exec { "Download ${name}":
       command => "wget ${site}/${name}",
       cwd     => $cwd,
       creates => "${cwd}/${name}",
