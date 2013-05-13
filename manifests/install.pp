@@ -19,12 +19,20 @@ define ezpublish::install(
     ensure => 'directory',
   }
 
+  # Make sure cache folder is cleared, in case of prior runs using vagrant reload
+  file{ "${destination}/ezpublish/cache/":
+    ensure  => 'absent',
+    recurse => true,
+    force   => true,
+    require => File[$ezpublish::params::version_archive],
+  }
+
   # Ensure we have a local copy of the eZ Publish version
   download_file { $file_name:
     site    => $download_url,
     cwd     => $ezpublish::params::version_archive,
     creates => "${ezpublish::params::version_archive}/${name}",
-    require => File[$ezpublish::params::version_archive],
+    require => File["${destination}/ezpublish/cache/"],
   }
 
   # Extract the distribution into the DocRoot
@@ -32,7 +40,6 @@ define ezpublish::install(
     dest    => $destination,
     options => '--strip-components=1',
     user    => $apache::params::user,
-    onlyif  => "test \$(/usr/bin/find ${destination} | wc -l) -eq 1",
     notify  => [Enforce_perms["Enforce g+rw ${destination}"], Service['httpd']],
     require => Download_file[$file_name],
   }
