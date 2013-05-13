@@ -5,20 +5,22 @@
 # TODO: Consider replacing with a shell script
 #
 define ezpublish::install(
-  $download_file,    # URL of destribution to install
-  $download_url,     #
-  $destination       # Where to install files
+  $file_name,     # Name of the file to find in the url and continue calling it on disk
+  $download_url,  # URL file name, should not end in a "/"
+  $destination    # Where to extract the file (the root of the eZ Publish install),
+                  # should not end in a "/"
 )
 {
   require ezpublish::params
   require apache::params
 
+  # Make sure archive folder exists
   file{ $ezpublish::params::version_archive:
     ensure => 'directory',
   }
 
   # Ensure we have a local copy of the eZ Publish version
-  download_file { $download_file:
+  download_file { $file_name:
     site    => $download_url,
     cwd     => $ezpublish::params::version_archive,
     creates => "${ezpublish::params::version_archive}/${name}",
@@ -26,20 +28,20 @@ define ezpublish::install(
   }
 
   # Extract the distribution into the DocRoot
-  extract_file { "${ezpublish::params::version_archive}/${download_file}":
+  extract_file { "${ezpublish::params::version_archive}/${file_name}":
     dest    => $destination,
     options => '--strip-components=1',
     user    => $apache::params::user,
     onlyif  => "test \$(/usr/bin/find ${destination} | wc -l) -eq 1",
     notify  => [Enforce_perms["Enforce g+rw ${destination}"], Service['httpd']],
-    require => Download_file[$download_file],
+    require => Download_file[$file_name],
   }
 
   # Ensure the group can read and write the files
   enforce_perms{ "Enforce g+rw ${destination}":
     dir     => $destination,
     perms   => 'g+rw',
-    require => Extract_file[ "${ezpublish::params::version_archive}/${download_file}" ],
+    require => Extract_file[ "${ezpublish::params::version_archive}/${file_name}" ],
   }
 
   #
