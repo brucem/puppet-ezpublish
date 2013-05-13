@@ -1,5 +1,5 @@
 name 'brucem-ezpublish'
-version '0.0.5'
+version '0.0.6'
 source 'git://github.com/brucem/puppet-ezpublish.git'
 author 'Bruce Morrison'
 license 'Apache 2.0'
