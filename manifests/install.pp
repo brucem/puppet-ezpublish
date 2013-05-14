@@ -5,41 +5,74 @@
 # TODO: Consider replacing with a shell script
 #
 define ezpublish::install(
-  $download_file,    # URL of destribution to install
-  $download_url,     #
-  $destination       # Where to install files
+  $file_name,     # Name of the file to find in the url and continue calling it on disk
+  $download_url,  # URL file name, should not end in a "/"
+  $destination    # Where to extract the file (the root of the eZ Publish install),
+                  # should not end in a "/"
 )
 {
   require ezpublish::params
   require apache::params
 
+  # Make sure archive folder exists
   file{ $ezpublish::params::version_archive:
     ensure => 'directory',
   }
 
-  # Ensure we have a local copy of the eZ Publish version
-  download_file { $download_file:
-    site    => $download_url,
-    cwd     => $ezpublish::params::version_archive,
-    creates => "${ezpublish::params::version_archive}/${name}",
+  # Make sure cache folder is cleared, in case of prior runs using vagrant reload
+  file{ "${destination}/ezpublish/cache/":
+    ensure  => 'absent',
+    recurse => true,
+    force   => true,
     require => File[$ezpublish::params::version_archive],
   }
 
-  # Extract the distribution into the DocRoot
-  extract_file { "${ezpublish::params::version_archive}/${download_file}":
-    dest    => $destination,
-    options => '--strip-components=1',
-    user    => $apache::params::user,
-    onlyif  => "test \$(/usr/bin/find ${destination} | wc -l) -eq 1",
-    notify  => [Enforce_perms["Enforce g+rw ${destination}"], Service['httpd']],
-    require => Download_file[$download_file],
+  # Ensure we have a local copy of the eZ Publish version
+  if $download_url == '' {
+
+    # A. Look for local file in project folder which has been mounted as /vagrant
+    copy_file { $file_name:
+      path    => '/vagrant',
+      cwd     => $ezpublish::params::version_archive,
+      creates => "${ezpublish::params::version_archive}/${name}",
+      require => File["${destination}/ezpublish/cache/"],
+    }
+
+    # Extract the distribution into the DocRoot
+    extract_file { "${ezpublish::params::version_archive}/${file_name}":
+      dest    => $destination,
+      options => '--strip-components=1',
+      user    => $apache::params::user,
+      notify  => [Enforce_perms["Enforce g+rw ${destination}"], Service['httpd']],
+      require => Copy_file[$file_name],
+    }
+
+  } else {
+
+    # B. Download file as we have an url
+    download_file { $file_name:
+      site    => $download_url,
+      cwd     => $ezpublish::params::version_archive,
+      creates => "${ezpublish::params::version_archive}/${name}",
+      require => File["${destination}/ezpublish/cache/"],
+    }
+
+    # Extract the distribution into the DocRoot
+    extract_file { "${ezpublish::params::version_archive}/${file_name}":
+      dest    => $destination,
+      options => '--strip-components=1',
+      user    => $apache::params::user,
+      notify  => [Enforce_perms["Enforce g+rw ${destination}"], Service['httpd']],
+      require => Download_file[$file_name],
+    }
+
   }
 
   # Ensure the group can read and write the files
   enforce_perms{ "Enforce g+rw ${destination}":
     dir     => $destination,
     perms   => 'g+rw',
-    require => Extract_file[ "${ezpublish::params::version_archive}/${download_file}" ],
+    require => Extract_file[ "${ezpublish::params::version_archive}/${file_name}" ],
   }
 
   #
@@ -90,12 +123,24 @@ define extract_file(
   }
 }
 
+define copy_file(
+  $path    = '',
+  $cwd     = '',
+  $creates = '')
+  {
+    exec { "Copy ${name}":
+      command => "cp ${path}/${name} ${cwd}/${name}",
+      cwd     => $cwd,
+      creates => "${cwd}/${name}",
+  }
+}
+
 define download_file(
   $site    = '',
   $cwd     = '',
   $creates = '')
   {
-    exec { $name:
+    exec { "Download ${name}":
       command => "wget ${site}/${name}",
       cwd     => $cwd,
       creates => "${cwd}/${name}",
