@@ -10,3 +10,5 @@
 2013-04-26 release 0.0.5
 - Add new rewrite rules for 5.1 & 2013.4.
 - Update documentation
+2013-05-15 release 0.0.6
+- Refactor install.pp and update to handle files (based on PR from @andrerom)

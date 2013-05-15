@@ -5,73 +5,84 @@
 # TODO: Consider replacing with a shell script
 #
 define ezpublish::install(
-  $download_file,    # URL of destribution to install
-  $download_url,     #
-  $destination       # Where to install files
+  $src,  # URL or file path of destribution to install
+  $dest  # Where to install files
 )
 {
   require ezpublish::params
   require apache::params
 
+  $filename = inline_template('<%= File.basename(src) %>')
+
   file{ $ezpublish::params::version_archive:
     ensure => 'directory',
   }
 
-  # Ensure we have a local copy of the eZ Publish version
-  download_file { $download_file:
-    site    => $download_url,
-    cwd     => $ezpublish::params::version_archive,
-    creates => "${ezpublish::params::version_archive}/${name}",
-    require => File[$ezpublish::params::version_archive],
+  if ($src =~ /^http(|s):\/\// )
+  {
+    # Download to local archive
+    download_file { $filename:
+      src     => $src,
+      dest    => $ezpublish::params::version_archive,
+      require => File[$ezpublish::params::version_archive],
+      notify  => Extract_file["${ezpublish::params::version_archive}/${filename}"],
+    }
+  } else {
+    # Copy to local archive
+    copy_file { $filename:
+      src => $src,
+      dest    => $ezpublish::params::version_archive,
+      require => File[$ezpublish::params::version_archive],
+      notify  => Extract_file["${ezpublish::params::version_archive}/${filename}"],
+    }
   }
 
-  # Extract the distribution into the DocRoot
-  extract_file { "${ezpublish::params::version_archive}/${download_file}":
-    dest    => $destination,
+  # Extract the source into the destination as long as the destination is empty
+  extract_file { "${ezpublish::params::version_archive}/${filename}":
+    dest    => $dest,
     options => '--strip-components=1',
     user    => $apache::params::user,
-    onlyif  => "test \$(/usr/bin/find ${destination} | wc -l) -eq 1",
-    notify  => [Enforce_perms["Enforce g+rw ${destination}"], Service['httpd']],
-    require => Download_file[$download_file],
+    onlyif  => "test \$(/usr/bin/find ${dest} | wc -l) -eq 1",
+    notify  => [Enforce_perms["Enforce g+rw ${dest}"], Service['httpd']],
   }
 
   # Ensure the group can read and write the files
-  enforce_perms{ "Enforce g+rw ${destination}":
-    dir     => $destination,
+  enforce_perms{ "Enforce g+rw ${dest}":
+    dir     => $dest,
     perms   => 'g+rw',
-    require => Extract_file[ "${ezpublish::params::version_archive}/${download_file}" ],
+    require => Extract_file[ "${ezpublish::params::version_archive}/${filename}" ],
   }
 
   #
   # Post extraction asset linking tasks
   #
-  exec{ "eZPublish link assets ${destination}":
+  exec{ "eZPublish link assets ${dest}":
     command => 'php ezpublish/console assets:install --symlink web',
     onlyif  => 'php ezpublish/console list | grep assets:install',
-    cwd     => $destination,
+    cwd     => $dest,
     user    => $apache::params::user,
-    creates => "${destination}/web/bundles/framework",
-    require => Enforce_perms["Enforce g+rw ${destination}"],
+    creates => "${dest}/web/bundles/framework",
+    require => Enforce_perms["Enforce g+rw ${dest}"],
   }
 
-  exec{ "eZPublish link legacy assets ${destination}":
+  exec{ "eZPublish link legacy assets ${dest}":
     command => 'php ezpublish/console ezpublish:legacy:assets_install --symlink web',
     onlyif  => 'php ezpublish/console list | grep ezpublish:legacy:assets_install',
-    cwd     => $destination,
+    cwd     => $dest,
     user    => $apache::params::user,
-    creates => "${destination}/web/var",
-    require => Exec["eZPublish link assets ${destination}"],
+    creates => "${dest}/web/var",
+    require => Exec["eZPublish link assets ${dest}"],
   }
 
   # New for eZ Publish Community Project 2013.4
   # Do not fail on non 0 return
-  exec{ "Assetic dump ${destination}":
+  exec{ "Assetic dump ${dest}":
     command => 'php ezpublish/console assetic:dump --env=prod web || exit 0',
     onlyif  => 'php ezpublish/console list | grep assetic:dump',
-    cwd     => $destination,
+    cwd     => $dest,
     user    => $apache::params::user,
-    creates => "${destination}/web/js",
-    require => Exec["eZPublish link legacy assets ${destination}"],
+    creates => "${dest}/web/js",
+    require => Exec["eZPublish link legacy assets ${dest}"],
   }
 
 }
@@ -91,14 +102,26 @@ define extract_file(
 }
 
 define download_file(
-  $site    = '',
-  $cwd     = '',
-  $creates = '')
-  {
-    exec { $name:
-      command => "wget ${site}/${name}",
-      cwd     => $cwd,
-      creates => "${cwd}/${name}",
+  $src,
+  $dest
+)
+{
+  $filename = inline_template('<%= File.basename(src) %>')
+  exec { "Download ${src} to ${dest}":
+    command => "wget ${src} -O ${dest}/${filename}",
+    creates => "${dest}/${filename}",
+  }
+}
+
+define copy_file(
+  $src,
+  $dest
+)
+{
+  $filename = inline_template('<%= File.basename(src) %>')
+  exec { "Copy ${src} to ${dest}":
+    command => "cp {$src} ${dest}/${filename}",
+    creates => "${dest}/${filename}",
   }
 }
 
