@@ -49,9 +49,8 @@ To setup a eZ Publish database:
 To install eZ Publish:
 
     ezpublish::install { 'eZ Publish Community Project 2013.4':
-        download_file => 'ezpublish5_community_project-2013.4-gpl-full.tar.gz',
-        download_url  => 'http://share.ez.no/content/download/149574/883017/version/1/file/ezpublish5_community_project-2013.4-gpl-full.tar.gz',
-        destination   => '/var/www'
+        src  => 'http://share.ez.no/content/download/149574/883017/version/1/file/ezpublish5_community_project-2013.4-gpl-full.tar.gz',
+        dest => '/var/www'
     }
 
 This will install the latest eZ Publish Community Project in the default application.
@@ -71,9 +70,8 @@ The above commands can be combined to prepare an eZ Publish server.
       }
 
       ezpublish::install { 'eZ Publish Community Project 2013.4':
-        download_file => 'ezpublish5_community_project-2013.4-gpl-full.tar.gz',
-        download_url  => 'http://share.ez.no/content/download/149574/883017/version/1/file/ezpublish5_community_project-2013.4-gpl-full.tar.gz',
-        destination   => '/var/www'
+        src  => 'http://share.ez.no/content/download/149574/883017/version/1/file/ezpublish5_community_project-2013.4-gpl-full.tar.gz',
+        desr => '/var/www'
       }
 
     }
