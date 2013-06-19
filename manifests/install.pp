@@ -120,7 +120,7 @@ define copy_file(
 {
   $filename = inline_template('<%= File.basename(src) %>')
   exec { "Copy ${src} to ${dest}":
-    command => "cp {$src} ${dest}/${filename}",
+    command => "cp ${src} ${dest}/${filename}",
     creates => "${dest}/${filename}",
   }
 }
