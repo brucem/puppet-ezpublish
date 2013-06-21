@@ -2,11 +2,9 @@
     RewriteEngine On
 
     # CVE-2012-6432
-    # Uncomment if you have Symfony v2.1.5 or superior
-    # eZ Publish 5.0 EE is shipped with Symfony v2.1.4
-    #RewriteRule ^/_internal - [R=403,L]
+    RewriteRule ^/_internal - [R=403,L]
 
-    # Uncomment in FastCGI mode or when using PHP-FPM, to get basic auth working.
+    # Uncomment in FastCGI mode, to get basic auth working.
     #RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
     # v1 rest API is on Legacy
@@ -24,9 +22,6 @@
     RewriteRule ^/packages/styles/.+/(stylesheets|images|javascript)/[^/]+/.* - [L]
     RewriteRule ^/packages/styles/.+/thumbnail/.* - [L]
     RewriteRule ^/var/storage/packages/.* - [L]
-    # For eZ Publish 5.1 and higher:
-    RewriteRule ^/css/.*\.css - [L]
-    RewriteRule ^/js/.*\.js - [L]
 
     # Makes it possible to place your favicon at the root of your
     # eZ Publish instance. It will then be served directly.
@@ -52,5 +47,14 @@
     # Following rule is needed to correctly display assets from eZ Publish5 / Symfony bundles
     RewriteRule ^/bundles/ - [L]
 
+<% if ezp_environment != 'dev' -%>
+    # Additional Assetic rules for eZ Publish 5.1 / 2013.4 and higher in prod mode:
+    RewriteRule ^/css/.*\.css - [L]
+    RewriteRule ^/js/.*\.js - [L]
+
     RewriteRule .* /index.php
+<% else -%>
+    # Use index_dev in dev env to make sure all 5.x versions can run dev
+    RewriteRule .* /index_dev.php [L]
+<% end -%>
 </IfModule>
