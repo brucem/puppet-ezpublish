@@ -87,7 +87,7 @@ define ezpublish::install(
 
 }
 
-# Utility definations
+# Utility definitions
 define extract_file(
   $dest,
   $options = '',
