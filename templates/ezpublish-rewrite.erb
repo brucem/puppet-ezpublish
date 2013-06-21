@@ -2,11 +2,9 @@
     RewriteEngine On
 
     # CVE-2012-6432
-    # Uncomment if you have Symfony v2.1.5 or superior
-    # eZ Publish 5.0 EE is shipped with Symfony v2.1.4
-    #RewriteRule ^/_internal - [R=403,L]
+    RewriteRule ^/_internal - [R=403,L]
 
-    # Uncomment in FastCGI mode or when using PHP-FPM, to get basic auth working.
+    # Uncomment in FastCGI mode, to get basic auth working.
     #RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
     # v1 rest API is on Legacy
