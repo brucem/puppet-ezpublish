@@ -1,3 +1,4 @@
-DocumentRoot "<%= docroot %>"
+DocumentRoot "<%= @docroot %>"
+SetEnv ENVIRONMENT "<%= @ezp_environment %>"
 <%= scope.function_template(["ezpublish/ezpublish-php.erb"]) %>
 <%= scope.function_template(["ezpublish/ezpublish-rewrite.erb"]) %>

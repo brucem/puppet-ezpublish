@@ -9,6 +9,7 @@ class ezpublish::default inherits ezpublish {
   # TODO: This should be a parameter
   $default_conf_file = '/etc/apache2/conf.d/ezpublish'
   $docroot = '/var/www/web'
+  $ezp_environment = $ezpublish::params::default_ezp_environment
 
   file {'/var/www/':
     ensure => 'directory',
