@@ -10,6 +10,11 @@ for:
 Current support is for Debian/Ubuntu based systems.  RedHat/CentOs support will
 be added in the future.
 
+Build Status
+------------
+[![Build Status](https://secure.travis-ci.org/brucem/puppet-ezpublish.png)](http://travis-ci.org/brucem/puppet-ezpublish)
+
+
 Basic usage
 -----------
 To install a system suitable for running eZ Publish
