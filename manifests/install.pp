@@ -30,7 +30,7 @@ define ezpublish::install(
   } else {
     # Copy to local archive
     copy_file { $filename:
-      src => $src,
+      src     => $src,
       dest    => $ezpublish::params::version_archive,
       require => File[$ezpublish::params::version_archive],
       notify  => Extract_file["${ezpublish::params::version_archive}/${filename}"],
