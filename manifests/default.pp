@@ -3,19 +3,22 @@
 # Generates a standalone eZPublish system where eZ publish can be installed as
 # the default docroot
 #
-class ezpublish::default {
+class ezpublish::default(
+  $docroot            = '/var/www/web',
+  $docroot_owner      = $ezpublish::params::vhost_docroot_owner,
+  $docroot_group      = $ezpublish::params::vhost_docroot_group,
+  $ezp_environment    = $ezpublish::params::default_ezp_environment,
+  $ezp_major_version  = $ezpublish::params::default_ezp_major_version,
+){
 
   require ezpublish
 
-  # TODO: This should be a parameter
   $default_conf_file = '/etc/apache2/conf.d/ezpublish'
-  $docroot = '/var/www/web'
-  $ezp_environment = $ezpublish::params::default_ezp_environment
 
   file {'/var/www/':
     ensure  => 'directory',
-    owner   => $ezpublish::params::vhost_docroot_owner,
-    group   => $ezpublish::params::vhost_docroot_group,
+    owner   => $docroot_owner,
+    group   => $docroot_group,
     require => Class['ezpublish'],
   }
 
