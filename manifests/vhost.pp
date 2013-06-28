@@ -42,7 +42,6 @@ define ezpublish::vhost(
   $configure_firewall = true,
   $ssl                = $apache::params::ssl,
   $template           = $ezpublish::params::vhost_template,
-  $ezp_environment    = $ezpublish::params::default_ezp_environment,
   $priority           = $apache::params::priority,
   $servername         = $apache::params::servername,
   $serveraliases      = $apache::params::serveraliases,
@@ -54,6 +53,8 @@ define ezpublish::vhost(
   $vhost_name         = $apache::params::vhost_name,
   $logroot            = "/var/log/${apache::params::apache_name}",
   $access_log         = true,
+  $ezp_environment    = $ezpublish::params::default_ezp_environment,
+  $ezp_major_version  = $ezpublish::params::default_ezp_major_version,
   $ensure             = 'present'
 )
 {

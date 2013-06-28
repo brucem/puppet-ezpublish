@@ -22,7 +22,8 @@ class ezpublish::params
   $vhost_docroot_options = 'FollowSymLink'
   $vhost_template = 'ezpublish/vhost-default.conf.erb'
 
-  $default_ezp_environment = 'prod'
+  $default_ezp_environment   = 'prod'
+  $default_ezp_major_version = 5
 
   $default_db_host = 'localhost'
   $default_db_priv = ['all']

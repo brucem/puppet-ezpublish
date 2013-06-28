@@ -44,13 +44,17 @@
     # Uncomment the following lines when using popup style debug in legacy
     #RewriteRule ^/var/([^/]+/)?cache/debug\.html.* - [L]
 
+<% if @ezp_major_version == '5' -%>
     # Following rule is needed to correctly display assets from eZ Publish5 / Symfony bundles
     RewriteRule ^/bundles/ - [L]
+<% end -%>
 
 <% if @ezp_environment != 'dev' -%>
+    <% if @ezp_major_version == '5' -%>
     # Additional Assetic rules for eZ Publish 5.1 / 2013.4 and higher in prod mode:
     RewriteRule ^/css/.*\.css - [L]
     RewriteRule ^/js/.*\.js - [L]
+    <% end -%>
 
     RewriteRule .* /index.php
 <% else -%>
