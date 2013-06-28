@@ -1,6 +1,8 @@
 eZ Publish module for Puppet
 ===========================
+
 [![Build Status](https://secure.travis-ci.org/brucem/puppet-ezpublish.png)](http://travis-ci.org/brucem/puppet-ezpublish)
+
 eZ Publish is an open source Content management system and this module allows
 for: 
 - the configuration of base system
