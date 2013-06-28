@@ -3,29 +3,29 @@
 # Managed by Puppet
 # ************************************
 
-NameVirtualHost <%= vhost_name %>:<%= port %>
-<VirtualHost <%= vhost_name %>:<%= port %>>
-  ServerName <%= srvname %>
-<% if serveradmin %>
-  ServerAdmin <%= serveradmin %>
+NameVirtualHost <%= @vhost_name %>:<%= @port %>
+<VirtualHost <%= @vhost_name %>:<%= @port %>>
+  ServerName <%= @srvname %>
+<% if @serveradmin %>
+  ServerAdmin <%= @serveradmin %>
 <% end %>
-<% if serveraliases.is_a? Array -%>
-<% serveraliases.each do |name| -%><%= "  ServerAlias #{name}\n" %><% end -%>
-<% elsif serveraliases != '' -%>
+<% if @serveraliases.is_a? Array -%>
+<% @serveraliases.each do |name| -%><%= "  ServerAlias #{name}\n" %><% end -%>
+<% elsif @serveraliases != '' -%>
 <%= "  ServerAlias #{serveraliases}" %>
 <% end -%>
-  DocumentRoot <%= docroot %>/web
-  <Directory <%= docroot %>>/web
-    Options <%= options %>
-    AllowOverride <%= Array(override).join(' ') %>
+  DocumentRoot <%= @docroot %>/web
+  <Directory <%= @docroot %>>/web
+    Options <%= @options %>
+    AllowOverride <%= Array(@override).join(' ') %>
     Order allow,deny
     allow from all
   </Directory>
-  ErrorLog <%= logroot %>/<%= name %>_error.log
+  ErrorLog <%= @logroot %>/<%= @name %>_error.log
   LogLevel warn
-  SetEnv ENVIRONMENT "<%= ezp_environment %>"
-<% if access_log -%>
-  CustomLog <%= logroot %>/<%= name %>_access.log combined
+  SetEnv ENVIRONMENT "<%= @ezp_environment %>"
+<% if @access_log -%>
+  CustomLog <%= @logroot %>/<%= @name %>_access.log combined
 <% end -%>
   ServerSignature Off
   <%= scope.function_template(["ezpublish/ezpublish-php.erb"]) %>
