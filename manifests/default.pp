@@ -3,8 +3,9 @@
 # Generates a standalone eZPublish system where eZ publish can be installed as
 # the default docroot
 #
-class ezpublish::default inherits ezpublish {
-  require ezpublish::params
+class ezpublish::default {
+
+  require ezpublish
 
   # TODO: This should be a parameter
   $default_conf_file = '/etc/apache2/conf.d/ezpublish'
@@ -12,18 +13,21 @@ class ezpublish::default inherits ezpublish {
   $ezp_environment = $ezpublish::params::default_ezp_environment
 
   file {'/var/www/':
-    ensure => 'directory',
-    owner  => $ezpublish::params::vhost_docroot_owner,
-    group  => $ezpublish::params::vhost_docroot_group,
+    ensure  => 'directory',
+    owner   => $ezpublish::params::vhost_docroot_owner,
+    group   => $ezpublish::params::vhost_docroot_group,
+    require => Class['ezpublish'],
   }
 
   file {'/var/www/index.html':
-    ensure => 'absent',
+    ensure  => 'absent',
+    require => File['/var/www/'],
   }
 
   file{ $default_conf_file:
     ensure  => 'present',
     content => template( 'ezpublish/ezpublish-default.erb'),
     notify  => Service['httpd'],
+    require => Class['ezpublish'],
   }
 }

@@ -5,17 +5,14 @@
 # This class is not intended to be used directly.
 # It may be imported or inherited by other classes
 #
-class ezpublish::params (
-  $timezone = undef
-){
+class ezpublish::params
+{
 
-  if $timezone { $php_default_date_timezone = $timezone }
-  else { $php_default_date_timezone = 'Europe/London' }
+  $php_default_date_timezone = 'Europe/London'
 
   $php_module_list = ['mysql', 'gd', 'mcrypt', 'imagick', 'curl', 'xsl']
 
   $php_pear_package_list = [ 'apc' ]
-
 
   $package_list =['imagemagick']
 
@@ -25,7 +22,7 @@ class ezpublish::params (
   $vhost_docroot_options = 'FollowSymLink'
   $vhost_template = 'ezpublish/vhost-default.conf.erb'
 
-  $default_ezp_environment = 'dev'
+  $default_ezp_environment = 'prod'
 
   $default_db_host = 'localhost'
   $default_db_priv = ['all']

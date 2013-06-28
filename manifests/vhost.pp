@@ -58,7 +58,7 @@ define ezpublish::vhost(
 )
 {
 
-  include ezpublish
+  require ezpublish
 
   apache::vhost{ $name:
     ensure             => $ensure,
@@ -70,7 +70,6 @@ define ezpublish::vhost(
     configure_firewall => $configure_firewall,
     ssl                => $ssl,
     template           => $template,
-    ezp_environment    => $ezp_environment,
     priority           => $priority,
     servername         => $servername,
     serveraliases      => $serveraliases,

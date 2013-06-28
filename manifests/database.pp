@@ -1,4 +1,6 @@
-define ezpublish::database(
+# Class ezpublish::database
+#
+define ezpublish::database (
   $db_user,
   $db_pass,
   $db_host = $ezpublish::params::default_db_host,

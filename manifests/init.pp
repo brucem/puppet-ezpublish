@@ -8,8 +8,11 @@
 #  - Install PHP
 #  - Install Required PHP modules
 #  - Install required packages
-class ezpublish {
-  require ezpublish::params
+class ezpublish (
+  $php_modules     = $ezpublish::params::php_module_list,
+  $pear_packages   = $ezpublish::params::php_pear_package_list,
+  $system_packages = $ezpublish::params::package_list,
+) inherits ezpublish::params {
 
   # Apache
   class {'apache':  }
@@ -25,18 +28,18 @@ class ezpublish {
   # PHP configuration
   class { 'php': }
 
-  php::module{ $ezpublish::params::php_module_list:
+  php::module{ $php_modules:
     notify  => Service['httpd'],
     require => Class['php'],
   }
 
-  php::pear::module{ $ezpublish::params::php_pear_package_list:
+  php::pear::module{ $pear_packages:
     notify  => Service['httpd'],
     require => Class['php'],
   }
 
   # Install any required packages
-  package{ $ezpublish::params::package_list:
+  package{ $system_packages:
     ensure => present,
   }
 
