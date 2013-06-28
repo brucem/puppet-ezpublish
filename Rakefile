@@ -3,11 +3,13 @@ Bundler.require(:rake)
 require 'rake/clean'
 
 require 'puppetlabs_spec_helper/rake_tasks'
-require 'puppet-lint'
+require 'puppet-lint/tasks/puppet-lint'
+#require 'puppet-lint'
 
 PuppetLint.configuration.with_filename = true
-PuppetLint.configuration.send('disable_documentation')
-PuppetLint.configuration.send('disable_class_parameter_defaults')
+# Ignore any spec manifests as well as the install.pp as it's a bit rubbish
+PuppetLint.configuration.ignore_paths = ["spec/**/*.pp", "manifests/install.pp"]
+PuppetLint.configuration.send('disable_class_inherits_from_params_class')
 PuppetLint.configuration.send('disable_80chars')
 
 CLEAN.include('spec/fixtures/', 'doc', 'pkg')
