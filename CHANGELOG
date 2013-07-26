@@ -2,7 +2,7 @@
 - Initial version
 2013-04-16 release 0.0.2
 - Fix documentation
-- Remove default index.html from docroot and change ownership to allow instalation 
+- Remove default index.html from docroot and change ownership to allow installation 
 2013-04-26 release 0.0.3
 - Allow setting of php default timezone in apache config
 2013-04-26 release 0.0.4
@@ -12,3 +12,9 @@
 - Update documentation
 2013-05-15 release 0.0.6
 - Refactor install.pp and update to handle files (based on PR from @andrerom)
+2013-07-26 release 0.0.7
+- Add tests
+- Fix dependencies to specific module versions (https://github.com/brucem/vagrant-puppet-ezpublish/issues/6 @phalasz)
+- Allow parameters to be overwritten in class definitions
+- Initial eZ Publish 4 support
+
