@@ -1,5 +1,6 @@
 .pkg
 .Gemfile.lock
+Puppetfile.lock
 spec/fixtures/
 .rspec_system
 .bundle
