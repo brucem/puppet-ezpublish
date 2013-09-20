@@ -10,7 +10,7 @@ for:
 - vhost configuration
 - installation of community versions of eZ publish
 
-Current support is for Debian/Ubuntu based systems.  RedHat/CentOs support will
+Current support is for Debian/Ubuntu based systems.  RedHat/CentOS support will
 be added in the future.
 
 
@@ -18,7 +18,9 @@ Basic usage
 -----------
 To install a system suitable for running eZ Publish
 
-    class { 'ezpublish': }
+```puppet
+class { 'ezpublish': }
+```
 
 This will setup a system suitable for running eZ publish.  A database server is
 not installed allowing this option to be used for systems with a separate DB
@@ -26,36 +28,46 @@ server.
 
 To install a standalone system: 
 
-    class { 'ezpublish::standalone' }
+```puppet
+class { 'ezpublish::standalone' }
+```
 
 This is the same as the above system but includes a database server.
 
 
 To configure Apache so eZ Publish can be installed as the default application: 
 
-    class{ 'ezpublish::default' }
+```puppet
+class{ 'ezpublish::default' }
+```
 
 To setup an eZ Publish virtual host:
 
-    ezpublish::vhost { 'ezdemo.yourdomain.com': }
+```puppet
+ezpublish::vhost { 'ezdemo.yourdomain.com': }
+```
 
 The [apache::vhosts] (https://github.com/puppetlabs/puppetlabs-apache)
 definition is reused here with some eZ Publish specific defaults.
 
 To setup a eZ Publish database:
 
-    ezpublish::database { 'ezpublish':
-        ensure  => 'present',
-        db_user => 'ezpublish',
-        db_pass => 'password',
-    }
+```puppet
+ezpublish::database { 'ezpublish':
+    ensure  => 'present',
+    db_user => 'ezpublish',
+    db_pass => 'password',
+}
+```
 
 To install eZ Publish:
 
-    ezpublish::install { 'eZ Publish Community Project 2013.4':
-        src  => 'http://share.ez.no/content/download/149574/883017/version/1/file/ezpublish5_community_project-2013.4-gpl-full.tar.gz',
-        dest => '/var/www'
-    }
+```puppet
+ezpublish::install { 'eZ Publish Community Project 2013.4':
+    src  => 'http://share.ez.no/content/download/149574/883017/version/1/file/ezpublish5_community_project-2013.4-gpl-full.tar.gz',
+    dest => '/var/www'
+}
+```
 
 This will install the latest eZ Publish Community Project in the default application.
 
@@ -63,22 +75,25 @@ Install the latest eZ Publish Community Project
 -----------------------------------------------
 The above commands can be combined to prepare an eZ Publish server.
 
-    node default {
-      class { 'ezpublish::standalone': }
-      class { 'ezpublish::default': }
 
-      ezpublish::database { 'ezpublish':
-        ensure  => 'present',
-        db_user => 'ezpublish',
-        db_pass => 'password',
-      }
+```puppet
+node default {
+  class { 'ezpublish::standalone': }
+  class { 'ezpublish::default': }
 
-      ezpublish::install { 'eZ Publish Community Project 2013.4':
-        src  => 'http://share.ez.no/content/download/149574/883017/version/1/file/ezpublish5_community_project-2013.4-gpl-full.tar.gz',
-        desr => '/var/www'
-      }
+  ezpublish::database { 'ezpublish':
+    ensure  => 'present',
+    db_user => 'ezpublish',
+    db_pass => 'password',
+  }
 
-    }
+  ezpublish::install { 'eZ Publish Community Project 2013.4':
+    src  => 'http://share.ez.no/content/download/149574/883017/version/1/file/ezpublish5_community_project-2013.4-gpl-full.tar.gz',
+    desr => '/var/www'
+  }
+
+}
+```
 
 Dependencies
 ------------
