@@ -108,7 +108,7 @@ Copyright and License
 
 Copyright (C) 2013 [Bruce Morrison](http://www.stuffandcontent.com/)
 
-Bruce Morrison can be contacted at: bruce@stuffansdcontent.com
+Bruce Morrison can be contacted at: bruce@stuffandcontent.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
