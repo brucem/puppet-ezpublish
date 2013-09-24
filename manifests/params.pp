@@ -10,7 +10,7 @@ class ezpublish::params
 
   $php_default_date_timezone = 'Europe/London'
 
-  $php_module_list = ['mysql', 'gd', 'mcrypt', 'imagick', 'curl', 'xsl']
+  $php_module_list = ['mysql', 'gd', 'mcrypt', 'imagick', 'curl', 'xsl', 'intl']
 
   $php_pear_package_list = [ 'apc' ]
 
