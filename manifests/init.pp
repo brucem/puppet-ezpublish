@@ -15,7 +15,9 @@ class ezpublish (
 ) inherits ezpublish::params {
 
   # Apache
-  class {'apache':  }
+  class {'apache':
+    mpm_module => 'prefork',
+  }
 
   apache::mod { 'rewrite': }
 
