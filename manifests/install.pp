@@ -12,7 +12,7 @@ define ezpublish::install(
   require ezpublish::params
   require apache::params
 
-  $filename = inline_template('<%= File.basename(src) %>')
+  $filename = inline_template('<%= File.basename(@src) %>')
 
   file{ $ezpublish::params::version_archive:
     ensure => 'directory',
@@ -106,7 +106,7 @@ define download_file(
   $dest
 )
 {
-  $filename = inline_template('<%= File.basename(src) %>')
+  $filename = inline_template('<%= File.basename(@src) %>')
   exec { "Download ${src} to ${dest}":
     command => "wget ${src} -O ${dest}/${filename}",
     creates => "${dest}/${filename}",
@@ -118,7 +118,7 @@ define copy_file(
   $dest
 )
 {
-  $filename = inline_template('<%= File.basename(src) %>')
+  $filename = inline_template('<%= File.basename(@src) %>')
   exec { "Copy ${src} to ${dest}":
     command => "cp ${src} ${dest}/${filename}",
     creates => "${dest}/${filename}",
