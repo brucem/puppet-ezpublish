@@ -11,16 +11,16 @@ define ezpublish::database (
   $user   = "${db_user}@${db_host}"
   $userdb = "${user}/${name}"
 
-  database_user { $user:
+  mysql_user { $user:
     ensure        => $ensure,
     password_hash => mysql_password($db_pass),
   }
 
-  database_grant { $userdb:
+  mysql_grant { $userdb:
     privileges => $db_priv,
   }
 
-  database { $name:
+  mysql_database { $name:
     ensure  => $ensure,
     require => Database_Grant[$userdb],
   }

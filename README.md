@@ -4,7 +4,7 @@ eZ Publish module for Puppet
 [![Build Status](https://secure.travis-ci.org/brucem/puppet-ezpublish.png?branch=master)](http://travis-ci.org/brucem/puppet-ezpublish)
 
 eZ Publish is an open source Content management system and this module allows
-for: 
+for:
 - the configuration of base system
 - default webserver configuration
 - vhost configuration
@@ -26,7 +26,7 @@ This will setup a system suitable for running eZ publish.  A database server is
 not installed allowing this option to be used for systems with a separate DB
 server.
 
-To install a standalone system: 
+To install a standalone system:
 
 ```puppet
 class { 'ezpublish::standalone' }
@@ -35,7 +35,7 @@ class { 'ezpublish::standalone' }
 This is the same as the above system but includes a database server.
 
 
-To configure Apache so eZ Publish can be installed as the default application: 
+To configure Apache so eZ Publish can be installed as the default application:
 
 ```puppet
 class{ 'ezpublish::default' }
@@ -89,7 +89,7 @@ node default {
 
   ezpublish::install { 'eZ Publish Community Project 2013.4':
     src  => 'http://share.ez.no/content/download/149574/883017/version/1/file/ezpublish5_community_project-2013.4-gpl-full.tar.gz',
-    desr => '/var/www'
+    dest => '/var/www'
   }
 
 }
