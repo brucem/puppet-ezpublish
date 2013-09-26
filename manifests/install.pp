@@ -9,6 +9,12 @@ define ezpublish::install(
   $dest  # Where to install files
 )
 {
+
+  Exec {
+    path => [ '/bin', '/usr/bin', '/usr/local/bin' ],
+    cwd  => '/',
+  }
+
   require ezpublish::params
   require apache::params
 
