@@ -70,33 +70,15 @@ define ezpublish::install(
   #
   # Post extraction asset linking tasks
   #
-  exec{ "eZPublish link assets ${dest}":
-    command => 'php ezpublish/console assets:install --symlink web',
+  exec{ "eZPublish post install ${dest}":
+    command => 'php ezpublish/console assets:install --symlink web && \
+    php ezpublish/console ezpublish:legacy:assets_install --symlink web && \
+    php ezpublish/console assetic:dump --env=prod web',
     onlyif  => 'php ezpublish/console list | grep assets:install',
     cwd     => $dest,
     user    => $apache::params::user,
-    creates => "${dest}/web/bundles/framework",
+    creates => "${dest}/ezpublish/cache/prod/assetic",
     require => Enforce_perms["Enforce g+rw ${dest}"],
-  }
-
-  exec{ "eZPublish link legacy assets ${dest}":
-    command => 'php ezpublish/console ezpublish:legacy:assets_install --symlink web',
-    onlyif  => 'php ezpublish/console list | grep ezpublish:legacy:assets_install',
-    cwd     => $dest,
-    user    => $apache::params::user,
-    creates => "${dest}/web/var",
-    require => Exec["eZPublish link assets ${dest}"],
-  }
-
-  # New for eZ Publish Community Project 2013.4
-  # Do not fail on non 0 return
-  exec{ "Assetic dump ${dest}":
-    command => 'php ezpublish/console assetic:dump --env=prod web || exit 0',
-    onlyif  => 'php ezpublish/console list | grep assetic:dump',
-    cwd     => $dest,
-    user    => $apache::params::user,
-    creates => "${dest}/web/js",
-    require => Exec["eZPublish link legacy assets ${dest}"],
   }
 
 }
