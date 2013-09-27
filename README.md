@@ -13,6 +13,8 @@ for:
 Current support is for Debian/Ubuntu based systems.  RedHat/CentOS support will
 be added in the future.
 
+To ensure that the correct version of dependant modules are installed please use
+the puppet module tool or librarian puppet.
 
 Basic usage
 -----------
@@ -89,7 +91,7 @@ node default {
 
   ezpublish::install { 'eZ Publish Community Project 2013.4':
     src  => 'http://share.ez.no/content/download/149574/883017/version/1/file/ezpublish5_community_project-2013.4-gpl-full.tar.gz',
-    desr => '/var/www'
+    dest => '/var/www'
   }
 
 }
@@ -97,11 +99,13 @@ node default {
 
 Dependencies
 ------------
-Functionality is dependant on the following modules:
+Functionality is dependant on specific versions of the following modules:
 
 - [mysql] (https://github.com/puppetlabs/puppetlabs-mysql)
 - [apache] (https://github.com/puppetlabs/puppetlabs-apache)
 - [php] (https://github.com/example42/puppet-php)
+
+See [Modulefile] (https://github.com/brucem/puppet-ezpublish/blob/master/Modulefile) for details.
 
 Copyright and License
 ---------------------
