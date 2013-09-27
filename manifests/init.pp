@@ -16,7 +16,8 @@ class ezpublish (
 
   # Apache
   class {'apache':
-    mpm_module => 'prefork',
+    default_vhost => false,
+    mpm_module    => 'prefork',
   }
 
   apache::mod { 'rewrite': }
