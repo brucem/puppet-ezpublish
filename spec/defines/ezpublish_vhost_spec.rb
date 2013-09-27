@@ -1,19 +1,27 @@
 require 'spec_helper'
 describe 'ezpublish::vhost', :type => :define do
-  let :title do
-      'test.vhost.com'
-  end
-
-  context "on a Debian based OS" do
-    let :facts do
-      {
-        :osfamily               => 'Debian',
-        :operatingsystemrelease => '6',
-        :concat_basedir         => '/dne',
-      }
+    let :pre_condition do
+    'class { "ezpublish": }'
     end
-    it { should contain_class('ezpublish') }
-    it { should contain_apache__vhost('test.vhost.com') }
+    let :title do
+      'test.vhost.com'
+    end
+    let :default_params do
+        {
+            :install_dir => '/rspec/docroot',
+        }
+    end
 
-  end
+    context "on a Debian based OS" do
+        let :facts do
+            {
+                :osfamily               => 'Debian',
+                :operatingsystemrelease => '6',
+                :concat_basedir         => '/dne',
+            }
+        end
+        it { should contain_class('ezpublish') }
+        it { should contain_apache__vhost('test.vhost.com') }
+
+    end
 end
