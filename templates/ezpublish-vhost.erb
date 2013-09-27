@@ -1,4 +1,5 @@
-DocumentRoot "<%= @docroot %>"
-SetEnv ENVIRONMENT <%= @ezp_environment %>
+<% if @custom_fragment != nil -%>
+    <%= @custom_fragment %>
+<% end -%>
 <%= scope.function_template(["ezpublish/ezpublish-php.erb"]) %>
 <%= scope.function_template(["ezpublish/ezpublish-rewrite.erb"]) %>
