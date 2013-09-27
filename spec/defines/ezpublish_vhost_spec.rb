@@ -7,7 +7,9 @@ describe 'ezpublish::vhost', :type => :define do
   context "on a Debian based OS" do
     let :facts do
       {
-        :osfamily => 'Debian',
+        :osfamily               => 'Debian',
+        :operatingsystemrelease => '6',
+        :concat_basedir         => '/dne',
       }
     end
     it { should contain_class('ezpublish') }

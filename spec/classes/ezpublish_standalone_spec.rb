@@ -5,6 +5,7 @@ describe 'ezpublish::standalone', :type => :class do
             {
                 :osfamily               => 'Debian',
                 :operatingsystemrelease => '6',
+                :concat_basedir         => '/dne',
            }
        end
        it { should include_class("ezpublish") }

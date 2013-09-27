@@ -5,6 +5,7 @@ describe 'ezpublish::params', :type => :class do
             {
                 :osfamily               => 'Debian',
                 :operatingsystemrelease => '6',
+                :concat_basedir         => '/dne',
            }
        end
       it { should contain_ezpublish__params }

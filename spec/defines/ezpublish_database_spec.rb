@@ -14,7 +14,9 @@ describe 'ezpublish::database', :type => :define do
   context "on a Debian based OS" do
     let :facts do
       {
-        :osfamily => 'Debian',
+        :osfamily               => 'Debian',
+        :operatingsystemrelease => '6',
+        :concat_basedir         => '/dne',
       }
     end
     let :params do default_params end
