@@ -43,13 +43,21 @@ define ezpublish::install(
     }
   }
 
+  # This is requireed as the apache::vhost resource will create the docroot.
+  # Yes it is a hack
+  exec { "Remove ${dest}/web":
+    command => "rmdir ${dest}/web",
+    unless  => "test $(ls -A ${dest} | wc -l) -gt 1"
+  }
+
   # Extract the source into the destination as long as the destination is empty
   extract_file { "${ezpublish::params::version_archive}/${filename}":
     dest    => $dest,
-    options => '--strip-components=1',
     user    => $apache::params::user,
-    onlyif  => "test \$(/usr/bin/find ${dest} | wc -l) -eq 1",
+    options => '--strip-components=1 --overwrite',
+    onlyif  => "test $(ls -A ${dest} | wc -l) -le 1",
     notify  => [Enforce_perms["Enforce g+rw ${dest}"], Service['httpd']],
+    require => Exec[ "Remove ${dest}/web" ],
   }
 
   # Ensure the group can read and write the files
