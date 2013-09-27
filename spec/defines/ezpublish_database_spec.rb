@@ -21,9 +21,7 @@ describe 'ezpublish::database', :type => :define do
     end
     let :params do default_params end
 
-    it { should contain_database_user('user@localhost') }
-    it { should contain_database_grant('user@localhost/name') }
-    it { should contain_database('name') }
+    it { should contain_mysql__db('name') }
 
   end
 end

@@ -27,6 +27,8 @@ class ezpublish::params
 
   $default_db_host = 'localhost'
   $default_db_priv = ['all']
+  $default_db_charset = 'utf8'
+  $default_db_collate = 'utf8_general_ci'
   $default_db_root_password = '654yOuShouLdReaLLyChanGeThIS542'
 
   # Where downloaded copies of eZ Publish are kept
