@@ -4,7 +4,7 @@
 # the default docroot
 #
 class ezpublish::default(
-  $docroot            = '/var/www/web',
+  $install_dir        = '/var/www/default',
   $docroot_owner      = $ezpublish::params::vhost_docroot_owner,
   $docroot_group      = $ezpublish::params::vhost_docroot_group,
   $ezp_environment    = $ezpublish::params::default_ezp_environment,
@@ -13,24 +13,15 @@ class ezpublish::default(
 
   require ezpublish
 
-  $default_conf_file = '/etc/apache2/conf.d/ezpublish'
-
-  file {'/var/www/':
-    ensure  => 'directory',
-    owner   => $docroot_owner,
-    group   => $docroot_group,
-    require => Class['ezpublish'],
+  ezpublish::vhost{ 'default':
+    ensure            => present,
+    install_dir       => $install_dir,
+    port              => 80,
+    docroot_owner     => $docroot_owner,
+    docroot_group     => $docroot_group,
+    setenv            => [ "ENVIRONMENT ${ezp_environment}" ],
+    ezp_major_version => $ezp_major_version,
+    default_vhost     => true,
   }
 
-  file {'/var/www/index.html':
-    ensure  => 'absent',
-    require => File['/var/www/'],
-  }
-
-  file{ $default_conf_file:
-    ensure  => 'present',
-    content => template( 'ezpublish/ezpublish-default.erb'),
-    notify  => Service['httpd'],
-    require => Class['ezpublish'],
-  }
 }
