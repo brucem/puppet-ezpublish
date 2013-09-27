@@ -3,7 +3,8 @@ describe 'ezpublish::standalone', :type => :class do
     context "on a Debian based OS" do
         let :facts do
             {
-                :osfamily => 'Debian',
+                :osfamily               => 'Debian',
+                :operatingsystemrelease => '6',
            }
        end
        it { should include_class("ezpublish") }
