@@ -13,6 +13,7 @@ describe 'ezpublish::vhost', :type => :define do
     end
 
     context "on a Debian based OS" do
+        let :params do default_params end
         let :facts do
             {
                 :osfamily               => 'Debian',
