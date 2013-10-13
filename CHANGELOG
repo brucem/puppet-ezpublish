@@ -27,3 +27,5 @@
 - Add intl php module to defaults that are installed
 - Update ezpublish::vhost to match new apache::vhost definition
 - Explicitly set Exec path in ezpublish::install (https://github.com/brucem/vagrant-puppet-ezpublish/issues/8 @nmeirik)
+2013-10-13 release 0.1.1
+- Allow mysql::server parameteres to be set
