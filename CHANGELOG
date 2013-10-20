@@ -29,3 +29,6 @@
 - Explicitly set Exec path in ezpublish::install (https://github.com/brucem/vagrant-puppet-ezpublish/issues/8 @nmeirik)
 2013-10-13 release 0.1.1
 - Allow mysql::server parameteres to be set
+2013-10-20 release 0.2.0
+- Update mysql module to 2.0.0
+- Update ezpublish::database_server parameters to match mysql::server

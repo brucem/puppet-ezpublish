@@ -9,7 +9,7 @@ describe 'ezpublish', :type => :class do
            }
        end
        it { should include_class("apache") }
-       it { should include_class("mysql") }
+       it { should include_class("mysql::client") }
        it { should include_class("php") }
 
        ['mysql', 'gd', 'mcrypt', 'imagick', 'curl', 'xsl', 'intl'].each do |phpmodulename|
