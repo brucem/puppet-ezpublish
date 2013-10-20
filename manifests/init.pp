@@ -26,7 +26,7 @@ class ezpublish (
   class {'apache::mod::php': }
 
   # MySQL client
-  class { 'mysql': }
+  class { 'mysql::client': }
 
   # PHP configuration
   class { 'php': }

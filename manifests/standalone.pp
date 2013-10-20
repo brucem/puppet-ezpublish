@@ -8,7 +8,7 @@ class ezpublish::standalone (
   $php_modules         = $ezpublish::params::php_module_list,
   $pear_packages       = $ezpublish::params::php_pear_package_list,
   $system_packages     = $ezpublish::params::package_list,
-  $db_config_hash      = {},
+  $db_options          = {},
   $db_root_password    = $ezpublish::params::default_db_root_password
 )
 inherits ezpublish::params {
@@ -20,7 +20,7 @@ inherits ezpublish::params {
   }
 
   class {'ezpublish::database_server':
-    config_hash      => $db_config_hash,
+    override_options => $db_options,
     root_password    => $db_root_password
   }
 }
