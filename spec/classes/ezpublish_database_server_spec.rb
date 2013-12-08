@@ -8,6 +8,6 @@ describe 'ezpublish::database_server', :type => :class do
                 :concat_basedir         => '/dne',
            }
        end
-       it { should include_class("mysql::server") }
+       it { should contain_class("mysql::server") }
    end
 end

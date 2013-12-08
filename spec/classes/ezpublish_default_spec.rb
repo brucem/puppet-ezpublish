@@ -8,7 +8,7 @@ describe 'ezpublish::default', :type => :class do
                 :concat_basedir         => '/dne',
             }
         end
-        it { should include_class("ezpublish") }
-        it { should contain_ezpublish__vhost("default") }
+        it { should contain_class("ezpublish") }
+        it { should contain_ezpublish__vhost("ez_default") }
     end
 end

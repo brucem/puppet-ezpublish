@@ -32,3 +32,7 @@
 2013-10-20 release 0.2.0
 - Update mysql module to 2.0.0
 - Update ezpublish::database_server parameters to match mysql::server
+2013-12-08 release 0.3.0
+- Upgrade apache module to 0.10.0 
+- Upgrade mysql module to 2.1.0
+- Update ezpublish::vhost to match apache::vhost

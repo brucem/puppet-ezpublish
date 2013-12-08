@@ -8,8 +8,8 @@ describe 'ezpublish::standalone', :type => :class do
                 :concat_basedir         => '/dne',
            }
        end
-       it { should include_class("ezpublish") }
-       it { should include_class("ezpublish::database_server") }
+       it { should contain_class("ezpublish") }
+       it { should contain_class("ezpublish::database_server") }
 
    end
 end

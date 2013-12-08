@@ -8,9 +8,9 @@ describe 'ezpublish', :type => :class do
                 :concat_basedir         => '/dne',
            }
        end
-       it { should include_class("apache") }
-       it { should include_class("mysql::client") }
-       it { should include_class("php") }
+       it { should contain_class("apache") }
+       it { should contain_class("mysql::client") }
+       it { should contain_class("php") }
 
        ['mysql', 'gd', 'mcrypt', 'imagick', 'curl', 'xsl', 'intl'].each do |phpmodulename|
          it { should contain_php__module(phpmodulename) }

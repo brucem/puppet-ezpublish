@@ -13,7 +13,7 @@ class ezpublish::default(
 
   require ezpublish
 
-  ezpublish::vhost{ 'default':
+  ezpublish::vhost{ 'ez_default':
     ensure            => present,
     install_dir       => $install_dir,
     port              => 80,
